@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gulliver's Escape Room</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="global-ocean" aria-hidden="true">
+        <div class="ocean-bg-image"></div>
+        <div class="sun-glow"></div>
+        <div class="cloud cloud-a">☁</div>
+        <div class="cloud cloud-b">☁</div>
+        <div class="cloud cloud-c">☁</div>
+        <div class="global-ship">⛵</div>
+        <div id="floating-bubbles"></div>
+        <div class="ocean-wave wave-a"></div>
+        <div class="ocean-wave wave-b"></div>
+        <div class="ocean-wave wave-c"></div>
+        <div class="underwater-haze"></div>
+    </div>
+
+    <div id="audio-controls" class="audio-controls">
+        <div class="audio-row"><span>♫ Music</span><button id="music-toggle" type="button">ON</button><input id="music-volume" type="range" min="0" max="1" step="0.05" value="0.22" aria-label="Music volume"></div>
+        <div class="audio-row"><span>♪ Effects</span><button id="effects-toggle" type="button">ON</button><input id="effects-volume" type="range" min="0" max="1" step="0.05" value="0.55" aria-label="Sound effects volume"></div>
+    </div>
+
+    <!-- =====================================================
+         COVER SCREEN
+         ===================================================== -->
+
+    <section id="cover-screen" class="screen active">
+
+        <div class="cover-background">
+
+            <img
+                src="images/cover.png"
+                alt="Gulliver's Escape Room Cover"
+                class="cover-image"
+            >
+
+            <div class="cover-content cover-only-button">
+                <button class="cover-start-button" onclick="startOpening()" aria-label="Start Gulliver's Escape Room">START</button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         OPENING VIDEO SCREEN
+         ===================================================== -->
+
+    <section id="opening-screen" class="screen">
+        <div class="opening-stage">
+            <video id="opening-video" playsinline preload="auto">
+                <source src="videos/opening-video.mp4" type="video/mp4">
+            </video>
+            <div class="opening-shade"></div>
+            <div id="swift-dialogue" class="swift-dialogue">
+                <div class="dialogue-name">JONATHAN SWIFT</div>
+                <div class="voiceover-credit">Voice-over: Glydel Pepito</div>
+                <div id="dialogue-text">Welcome, traveler!</div>
+            </div>
+            <button id="begin-quest-button" class="main-button begin-quest-button" onclick="beginQuest()" style="display:none;">BEGIN THE QUEST</button>
+            <button id="skip-opening" class="opening-skip" onclick="finishOpening()">SKIP INTRO</button>
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         NAME SCREEN
+         ===================================================== -->
+
+    <section id="name-screen" class="screen">
+        <div class="name-card">
+            <div class="name-icon">⛵</div>
+            <h1>Meet the Explorer</h1>
+            <p>Enter your complete name before the journey begins.</p>
+            <div class="name-fields">
+                <input type="text" id="first-name" placeholder="First Name" maxlength="30" autocomplete="given-name">
+                <input type="text" id="middle-name" placeholder="Middle Name" maxlength="30" autocomplete="additional-name">
+                <input type="text" id="surname" placeholder="Surname" maxlength="30" autocomplete="family-name">
+            </div>
+            <button class="main-button" onclick="enterAdventure()">BEGIN THE JOURNEY</button>
+            <p id="name-error" class="error-message"></p>
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         MAP SCREEN
+         ===================================================== -->
+
+    <section id="map-screen" class="screen">
+
+        <div class="ocean-world">
+
+            <!-- Decorative bubbles -->
+
+            <div class="bubble bubble-1"></div>
+            <div class="bubble bubble-2"></div>
+            <div class="bubble bubble-3"></div>
+            <div class="bubble bubble-4"></div>
+            <div class="bubble bubble-5"></div>
+
+
+            <!-- Map header -->
+
+            <div class="map-header">
+
+                <p class="map-welcome">
+                    Welcome, <strong id="map-player-name">Explorer</strong>!
+                </p>
+
+                <h1>GULLIVER'S ADVENTURE MAP</h1>
+
+                <p>
+                    Complete each voyage to unlock the next one.
+                </p>
+
+                <div class="map-score">
+
+                    <span>
+                        ⭐ Score:
+                        <strong id="map-score">0</strong>
+                    </span>
+
+                    <span>
+                        ❤️ Hearts:
+                        <strong id="map-hearts">3</strong>
+                    </span>
+
+                </div>
+
+                
+
+            </div>
+
+
+            <!-- Adventure map -->
+            <div class="adventure-map final-adventure-map">
+                <div class="map-skyline"></div>
+                <div class="map-journey-line" aria-hidden="true"></div>
+                <div class="map-compass" aria-hidden="true"><span></span></div>
+                <div class="map-ship-art" aria-hidden="true"><i></i><b></b><em></em></div>
+
+                <button class="voyage-location voyage-card" data-part="1" id="voyage-1" onclick="openPart(1)">
+                    <span class="voyage-art" aria-hidden="true"><img class="voyage-photo" src="images/Part 1 Chapter 1.jpg" alt="Lilliput" loading="eager"><span class="photo-shade"></span></span>
+                    <span class="voyage-copy"><strong>VOYAGE I</strong><span>Lilliput</span><small class="lock-status">UNLOCKED</small></span>
+                </button>
+
+                <button class="voyage-location voyage-card" data-part="2" id="voyage-2" onclick="openPart(2)">
+                    <span class="voyage-art" aria-hidden="true"><img class="voyage-photo" src="images/Part 2 Chapter 1.jpg" alt="Brobdingnag" loading="eager"><span class="photo-shade"></span></span>
+                    <span class="voyage-copy"><strong>VOYAGE II</strong><span>Brobdingnag</span><small class="lock-status">LOCKED</small></span>
+                </button>
+
+                <button class="voyage-location voyage-card" data-part="3" id="voyage-3" onclick="openPart(3)">
+                    <span class="voyage-art" aria-hidden="true"><img class="voyage-photo" src="images/Part 3 Chapter 1.jpg" alt="Laputa" loading="eager"><span class="photo-shade"></span></span>
+                    <span class="voyage-copy"><strong>VOYAGE III</strong><span>Laputa &amp; Beyond</span><small class="lock-status">LOCKED</small></span>
+                </button>
+
+                <button class="voyage-location voyage-card" data-part="4" id="voyage-4" onclick="openPart(4)">
+                    <span class="voyage-art" aria-hidden="true"><img class="voyage-photo" src="images/Part 4 Chapter 1.jpg" alt="Houyhnhnms" loading="eager"><span class="photo-shade"></span></span>
+                    <span class="voyage-copy"><strong>VOYAGE IV</strong><span>Houyhnhnms</span><small class="lock-status">LOCKED</small></span>
+                </button>
+
+                <div class="map-interactive map-fish" data-message="Hi! A little fish is swimming by!"><span class="object-art"></span><span class="object-hi">HI!</span></div>
+                <div class="map-interactive map-cloud-object" data-message="Hi! A cloud is drifting over the map!"><span class="object-art"></span><span class="object-hi">HI!</span></div>
+                <div class="map-interactive map-shell-object" data-message="Hi! You found a seashell!"><span class="object-art"></span><span class="object-hi">HI!</span></div>
+                <div class="map-interactive map-bubble-object" data-message="Hi! Pop the bubble!"><span class="object-art"></span><span class="object-hi">HI!</span></div>
+                <div class="map-interactive map-horse-object" data-message="Hi! A friendly horse is watching the voyage!"><span class="object-art"></span><span class="object-hi">HI!</span></div>
+                <div class="map-interactive map-tiny-object" data-message="Hi! A tiny traveler lives here!"><span class="object-art"></span><span class="object-hi">HI!</span></div>
+            </div>
+
+            <!-- Quick actions always available from the map -->
+            <div class="map-quick-actions" aria-label="Quick actions">
+                <button class="map-quick-button map-quick-primary" onclick="openReview()">REVIEW</button>
+                <button class="map-quick-button" onclick="returnToMap()">EXPLORE MAP</button>
+                <button class="map-quick-button" onclick="openCertificate()">CERTIFICATE</button>
+                <button class="map-quick-button" onclick="openBonusGame()">MEMORY MATCH</button>
+                <button class="map-quick-button" onclick="openAboutProject()">ABOUT PROJECT</button>
+                <button class="map-quick-button" onclick="restartAdventure()">START AGAIN</button>
+            </div>
+
+
+            <div class="wave wave-1"></div>
+            <div class="wave wave-2"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         STORY SCREEN
+         ===================================================== -->
+
+    <section id="story-screen" class="screen">
+
+        <div class="story-container">
+
+            <div class="story-header">
+
+                <p id="part-label">
+                    Voyage I
+                </p>
+
+                <h1 id="chapter-title">
+                    Chapter Title
+                </h1>
+
+                <div
+                    id="chapter-counter"
+                    class="chapter-counter"
+                >
+                    Chapter 1
+                </div>
+
+            </div>
+
+            <div id="story-interactives" class="story-interactives" aria-label="Interactive voyage characters and objects"></div>
+
+            <div class="story-card">
+
+                <img
+                    id="chapter-image"
+                    src=""
+                    alt="Chapter illustration"
+                >
+
+                <div
+                    id="chapter-text"
+                    class="chapter-text"
+                >
+                </div>
+
+            </div>
+
+
+            <div class="story-controls">
+
+                <button
+                    id="next-chapter-button"
+                    class="main-button"
+                    onclick="nextChapter()"
+                >
+                    Next Chapter ➜
+                </button>
+
+                <button
+                    id="quiz-button"
+                    class="main-button"
+                    onclick="startQuiz()"
+                    style="display:none;"
+                >
+                    Take the Voyage Quiz
+                </button>
+
+                <button
+                    class="secondary-button"
+                    onclick="openReview()"
+                >
+                    REVIEW THE JOURNEY
+                </button>
+
+                <button
+                    class="secondary-button"
+                    onclick="returnToMap()"
+                >
+                    🗺️ Back to Map
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         QUIZ SCREEN
+         ===================================================== -->
+
+    <section id="quiz-screen" class="screen">
+
+        <div class="quiz-container">
+
+            <div class="quiz-header">
+
+                <p id="quiz-voyage-label">
+                    VOYAGE QUIZ
+                </p>
+
+                <h1>
+                    Test Your Knowledge!
+                </h1>
+
+                <div class="quiz-timer-wrap">
+                    <div class="quiz-progress" id="quiz-score">Question 1</div>
+                    <div class="quiz-timer" id="quiz-timer">10</div>
+                </div>
+
+                <div class="quiz-status">
+
+                    <span>
+                        ⭐ Score:
+                        <strong id="quiz-current-score">
+                            0
+                        </strong>
+                    </span>
+
+                    <span>
+                        ❤️ Hearts:
+                        <strong id="quiz-current-hearts">
+                            3
+                        </strong>
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="quiz-card">
+
+                <h2 id="quiz-question">
+                    Question
+                </h2>
+
+                <div
+                    id="answer-buttons"
+                    class="answer-buttons"
+                >
+                </div>
+
+                <div
+                    id="quiz-feedback"
+                    class="quiz-feedback"
+                >
+                </div>
+
+            </div>
+
+
+            <div class="quiz-note">
+
+                <strong>Remember:</strong>
+
+                Every correct answer earns points.
+                Wrong answers have consequences,
+                so read carefully!
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         VOYAGE SUCCESS SCREEN
+         ===================================================== -->
+
+    <section id="success-screen" class="screen">
+
+        <div
+            id="confetti-container"
+            class="confetti-container"
+        >
+        </div>
+
+        <div class="success-card">
+
+            <div class="success-icon">
+                🎉
+            </div>
+
+            <h1>
+                VOYAGE COMPLETED!
+            </h1>
+
+            <p>
+                Congratulations, Explorer!
+            </p>
+
+            <p id="success-message">
+                You completed the voyage!
+            </p>
+
+            <div class="success-score">
+
+                <p>
+                    Voyage Score:
+                    <strong id="voyage-final-score">
+                        0
+                    </strong>
+                </p>
+
+            </div>
+
+            <button
+                class="main-button"
+                onclick="returnToMap()"
+            >
+                CONTINUE THE JOURNEY
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         VOYAGE FAILED SCREEN
+         ===================================================== -->
+
+    <section id="failed-screen" class="screen">
+
+        <div class="failed-card">
+
+            <div class="failed-icon">
+                😿
+            </div>
+
+            <h1>
+                VOYAGE FAILED!
+            </h1>
+
+            <p>
+                Oh no, Explorer!
+            </p>
+
+            <p>
+                This voyage is not complete yet.
+                Don't give up!
+            </p>
+
+            <p>
+                Review the chapters and answer every question correctly
+                to unlock the next voyage.
+            </p>
+
+            <div class="failed-score">
+
+                <p>
+                    Current Score:
+                    <strong id="failed-score-value">
+                        0
+                    </strong>
+                </p>
+
+            </div>
+
+            <button
+                class="main-button"
+                onclick="retryVoyage()"
+            >
+                📖 REVIEW & TRY AGAIN
+            </button>
+
+            <button
+                class="secondary-button"
+                onclick="returnToMap()"
+            >
+                🗺️ RETURN TO MAP
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         REVIEW SCREEN
+         ===================================================== -->
+
+    <section id="review-screen" class="screen">
+
+        <div class="review-container">
+
+            <div class="review-header">
+
+                <div class="review-icon">
+                    📖
+                </div>
+
+                <h1>
+                    REVIEW THE JOURNEY
+                </h1>
+
+                <p>
+                    Review all four voyages before
+                    continuing your adventure.
+                </p>
+
+            </div>
+
+
+            <div
+                id="review-content"
+                class="review-content"
+            >
+            </div>
+
+
+            <div class="review-actions">
+
+                <button
+                    class="secondary-button"
+                    onclick="returnToMap()"
+                >
+                    🗺️ BACK TO MAP
+                </button>
+
+                <button
+                    class="main-button"
+                    onclick="openAnswerHistory()"
+                >
+                    📝 VIEW MY ANSWERS
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ANSWER HISTORY SCREEN
+         ===================================================== -->
+
+    <section id="answer-history-screen" class="screen">
+
+        <div class="history-container">
+
+            <div class="history-header">
+
+                <div class="history-icon">
+                    📝
+                </div>
+
+                <h1>
+                    MY ANSWER HISTORY
+                </h1>
+
+                <p>
+                    See the answers you gave during your journey.
+                </p>
+
+            </div>
+
+
+            <div
+                id="answer-history"
+                class="answer-history"
+            >
+            </div>
+
+
+            <div class="history-actions">
+
+                <button
+                    class="secondary-button"
+                    onclick="openReview()"
+                >
+                    📖 BACK TO REVIEW
+                </button>
+
+                <button
+                    class="main-button"
+                    onclick="returnToMap()"
+                >
+                    🗺️ BACK TO MAP
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FINAL SCREEN
+         ===================================================== -->
+
+    <section id="final-screen" class="screen">
+
+        <div
+            id="final-confetti"
+            class="confetti-container"
+        >
+        </div>
+
+
+        <div class="final-card">
+
+            <div class="final-icon">
+                🏆
+            </div>
+
+            <h1>
+                JOURNEY COMPLETE!
+            </h1>
+
+            <p class="final-congratulations">
+                Congratulations,
+                <strong id="final-player-name">
+                    Explorer
+                </strong>!
+            </p>
+
+            <p>
+                You have completed all four
+                voyages of Gulliver's journey.
+            </p>
+
+
+            <!-- FINAL SCORE CARD -->
+
+            <div
+                id="final-score-card"
+                class="final-score-card"
+            >
+
+                <div class="score-card-title">
+                    ⚓ GULLIVER'S ESCAPE ROOM ⚓
+                </div>
+
+                <div class="score-card-subtitle">
+                    FINAL EXPLORER SCORE
+                </div>
+
+                <div class="final-name">
+                    <span>Explorer:</span>
+
+                    <strong id="score-card-name">
+                        Explorer
+                    </strong>
+                </div>
+
+
+                <div class="voyage-score-list">
+
+                    <div class="score-row">
+                        <span>Voyage I — Lilliput</span>
+                        <strong id="final-voyage-1-score">
+                            0
+                        </strong>
+                    </div>
+
+                    <div class="score-row">
+                        <span>Voyage II — Brobdingnag</span>
+                        <strong id="final-voyage-2-score">
+                            0
+                        </strong>
+                    </div>
+
+                    <div class="score-row">
+                        <span>Voyage III — Laputa</span>
+                        <strong id="final-voyage-3-score">
+                            0
+                        </strong>
+                    </div>
+
+                    <div class="score-row">
+                        <span>Voyage IV — Houyhnhnms</span>
+                        <strong id="final-voyage-4-score">
+                            0
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="total-score-row">
+
+                    <span>
+                        TOTAL SCORE
+                    </span>
+
+                    <strong id="final-total-score">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="final-statistics">
+
+                    <div>
+                        <strong id="final-correct">
+                            0
+                        </strong>
+
+                        <span>
+                            Correct
+                        </span>
+                    </div>
+
+                    <div>
+                        <strong id="final-wrong">
+                            0
+                        </strong>
+
+                        <span>
+                            Incorrect
+                        </span>
+                    </div>
+
+                    <div>
+                        <strong id="final-questions">
+                            0
+                        </strong>
+
+                        <span>
+                            Questions
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="screenshot-note">
+
+                    📸
+
+                    <strong>
+                        SCREENSHOT THIS SCORE CARD!
+                    </strong>
+
+                    <br>
+
+                    You may screenshot or record
+                    this screen as proof of completion.
+
+                </div>
+
+            </div>
+
+
+            <div class="final-actions">
+
+                <button
+                    class="main-button"
+                    onclick="openReview()"
+                >
+                    REVIEW THE JOURNEY
+                </button>
+
+                <button
+                    class="secondary-button"
+                    onclick="returnToMap()"
+                >
+                    🗺️ EXPLORE THE MAP
+                </button>
+
+                <button class="secondary-button" onclick="openCertificate()">🏅 CERTIFICATE</button>
+                <button class="secondary-button" onclick="openBonusGame()">🧠 MEMORY MATCH</button>
+                <button class="secondary-button" onclick="openAboutProject()">🌊 ABOUT THE PROJECT</button>
+                <button
+                    class="secondary-button"
+                    onclick="restartAdventure()"
+                >
+                    🔄 START AGAIN
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CERTIFICATE
+         ===================================================== -->
+    <section id="certificate-screen" class="screen">
+        <div class="certificate-card" id="certificate-card">
+            <div class="certificate-seal">⚓</div>
+            <p class="certificate-kicker">GULLIVER'S ESCAPE ROOM</p>
+            <h1>CERTIFICATE OF COMPLETION</h1>
+            <p>This certificate is proudly presented to</p>
+            <h2 id="certificate-name">Explorer</h2>
+            <p>for completing all four voyages and the escape quest.</p>
+            <div class="certificate-score">FINAL SCORE <strong id="certificate-score">0</strong></div>
+            <p class="certificate-based">Based on <em>Gulliver's Travels</em> by Jonathan Swift</p>
+            <div class="certificate-actions"><button class="main-button" onclick="printCertificate()">PRINT / SAVE PDF</button><button class="secondary-button" onclick="showFinalScreen()">BACK</button></div>
+        </div>
+    </section>
+
+    <!-- =====================================================
+         MEMORY MATCH
+         ===================================================== -->
+    <section id="bonus-screen" class="screen">
+        <div class="bonus-card">
+            <p class="bonus-kicker">BONUS QUEST</p>
+            <h1>MEMORY MATCH</h1>
+            <p>Match the Gulliver's Travels pairs.</p>
+            <div class="memory-stats"><span>Moves: <strong id="memory-moves">0</strong></span><span>Matches: <strong id="memory-matches">0</strong>/8</span></div>
+            <div id="memory-grid" class="memory-grid"></div>
+            <div id="memory-message" class="memory-message"></div>
+            <div class="review-actions"><button class="main-button" onclick="setupMemoryGame()">PLAY AGAIN</button><button class="secondary-button" onclick="showFinalScreen()">BACK TO COMPLETION</button></div>
+        </div>
+    </section>
+
+    <!-- =====================================================
+         ABOUT PROJECT
+         ===================================================== -->
+    <section id="about-screen" class="screen">
+        <div class="about-card">
+            <p class="bonus-kicker">FINAL STOP</p>
+            <h1>ABOUT THE PROJECT</h1>
+            <h2>GULLIVER'S ESCAPE ROOM</h2>
+            <div class="about-grid">
+                <div><h3>DEVELOPED BY</h3><p>Princess Ann H. Esig</p></div>
+                <div><h3>CREATORS</h3><p>Princess Ann H. Esig<br>Glydel Pepito<br>Armari Angel L. Rebias<br>Jay Kent G. Sabellano<br>Erica T. Ynot</p></div>
+            </div>
+            <div class="creator-pages"><img src="images/creators-page-1.png" alt="Creators page 1"><img src="images/creators-page-2.png" alt="Creators page 2"></div>
+            <div class="teacher-profile">
+                <div><h3>DEDICATED TO OUR TEACHER</h3><h2>Regina Kemberly E. Pagatpat, MAEd, LPT</h2><p id="teacher-bio"></p></div>
+                <img src="images/teacher.jpg" alt="Ms. Kim">
+            </div>
+            <button class="main-button" onclick="showFinalScreen()">BACK TO COMPLETION</button>
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         AUDIO
+         ===================================================== -->
+
+    <audio id="background-music" src="audio/gullivers-calm-background-music.wav" loop preload="auto"></audio>
+
+    <audio
+        id="click-sound"
+        preload="auto"
+    ></audio>
+
+    <audio
+        id="correct-sound"
+        preload="auto"
+    ></audio>
+
+    <audio
+        id="wrong-sound"
+        preload="auto"
+    ></audio>
+
+    <audio
+        id="success-sound"
+        preload="auto"
+    ></audio>
+
+    <audio
+        id="final-sound"
+        preload="auto"
+    ></audio>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
