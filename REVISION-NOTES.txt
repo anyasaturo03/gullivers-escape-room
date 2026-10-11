@@ -1,0 +1,26 @@
+GULLIVER'S ADVENTURE ROOM — CONSOLIDATED REVISION
+
+This folder preserves the working map-click behavior and the existing learning-game content.
+
+Map behavior:
+- Click directly on the printed numbered destination banners in the map artwork: 1 Lilliput, 2 Brobdingnag, 3 Laputa and Others, 4 Houyhnhnms.
+- No separate voyage cards or visible hotspot circles are used.
+- LOCKED / UNLOCKED / COMPLETED status labels are updated by the game code.
+- Voyages unlock sequentially according to completion progress.
+
+Included game features in the current code:
+- Opening video and Begin the Quest flow
+- Full-name entry
+- Four voyages and 31 chapter illustrations
+- Timed quiz, hearts, scoring, correct-answer feedback, and golden stars
+- Five achievement badges
+- Vocabulary popups and story interactives
+- Memory match activity
+- Review, certificate, About Project, restart, and audio controls
+
+To run:
+1. Extract this ZIP completely.
+2. Open the extracted Gullivers-Adventure-Room folder in VS Code.
+3. Use Live Server to open index.html.
+
+Keep a backup of your previous folder until you have tested the game on your computer.
